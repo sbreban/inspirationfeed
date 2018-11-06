@@ -1,17 +1,16 @@
 package net.sbreban.inspirationfeed
 
-import org.springframework.beans.factory.annotation.Autowired
+import net.sbreban.inspirationfeed.dao.FeedItemDAO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.View
 
 @RestController
-class RssFeedController {
+class RssFeedController(private val feedItemDAO: FeedItemDAO) {
 
-    @Autowired
-    private val view: RssFeedView? = null
-
-    val feed: View?
-        @GetMapping("/feed")
-        get() = view
+    @GetMapping("/feed")
+    fun getFeed(): View? {
+        val feedItems = feedItemDAO.findAll()
+        return RssFeedView(feedItems)
+    }
 }
